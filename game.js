@@ -26,6 +26,8 @@ function starGame() {
   game.textAlign = "end";
 
   for (let i = 1; i <= 10; i++) {
-    game.fillText(emojis["X"], elementSize * i, elementSize);
+    for (let z = 1; z <= 10; z++) {
+      game.fillText(emojis["X"], elementSize * i, elementSize * z);
+    }
   }
 }
