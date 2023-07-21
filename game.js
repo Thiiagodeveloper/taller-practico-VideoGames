@@ -4,12 +4,10 @@ const game = canvas.getContext("2d");
 window.addEventListener("load", starGame);
 
 function starGame() {
-  //   game.fillRect(0, 0, 100, 100);
-  //   game.clearRect(50, 50, 50, 50);
-  //   game.clearRect();
-
-  game.font = "25px Verdana";
+  game.fillRect(100, 25, 100, 100);
+  game.clearRect(120, 45, 60, 60);
+  game.font = "15px Verdana";
   game.fillStyle = "purple";
   game.textAlign = "left";
-  game.fillText("Platzi", 50, 50);
+  game.fillText("Platzi", 130, 80);
 }
