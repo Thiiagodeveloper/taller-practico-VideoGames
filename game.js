@@ -49,6 +49,8 @@ function starGame() {
   const mapRowCols = mapRows.map((row) => row.trim().split("")); // creando un array bidimensional con los caracteres individuales
   console.log({ map, mapRows, mapRowCols });
 
+  game.clearRect(0, 0, canvasSize, canvasSize);
+
   //Recorriendo array multidimensional, de filas y columnas === index para obtener posiciones
   mapRowCols.forEach((row, rowIndex) => {
     row.forEach((col, colIndex) => {
@@ -58,9 +60,11 @@ function starGame() {
 
       //Mos
       if (col == "O") {
-        playerPosition.x = posX;
-        playerPosition.y = posY;
-        console.log({ posX, posY, playerPosition });
+        if (!playerPosition.x && !playerPosition.y) {
+          playerPosition.x = posX;
+          playerPosition.y = posY;
+          console.log({ posX, posY, playerPosition });
+        }
       }
       //Mostrando el emoji o elemento en su posicion
       game.fillText(emoji, posX, posY);
@@ -69,11 +73,11 @@ function starGame() {
   //Mostrando el jugador
   movePlayer();
 }
-
+//MOVIMIENTOS DEL JUGADOR
 function movePlayer() {
   game.fillText(emojis["PLAYER"], playerPosition.x, playerPosition.y);
 }
-//MOVIMIENTOS DEL JUGADOR
+
 function moveBykeys(event) {
   if (event.key == "ArrowUp") moveUp();
   else if (event.key == "ArrowLeft") moveLeft();
@@ -83,15 +87,20 @@ function moveBykeys(event) {
 function moveUp() {
   console.log("Arriba");
   playerPosition.y -= elementSize;
-  movePlayer();
+  starGame();
 }
 function moveLeft() {
   console.log("Izquierda");
+  playerPosition.x -= elementSize;
+  starGame();
 }
 function moveRight() {
   console.log("Derecha");
+  playerPosition.x += elementSize;
+  starGame();
 }
 function moveDown() {
-  console.log("Abajo");
+  playerPosition.y += elementSize;
+  starGame();
 }
 //
