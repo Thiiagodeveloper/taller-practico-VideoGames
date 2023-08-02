@@ -34,11 +34,11 @@ function setCanvasSize() {
 
   //elementoSize = al tamano del canvas divido en 10, esto es para que el elemento o objeto sea proporcional al tamano del canvas
   elementSize = canvasSize / 10;
-  starGame();
+  startGame();
 }
 
 //function para conmenzar juego, renderizar mapa
-function starGame() {
+function startGame() {
   //Tamano de elementos
   game.font = elementSize + "px Verdana"; // agregando el tamano el elemento
   game.textAlign = "end"; // aliniando el elemento en el canvas
@@ -59,12 +59,9 @@ function starGame() {
       const posY = elementSize * (rowIndex + 1);
 
       //Mos
-      if (col == "O") {
-        if (!playerPosition.x && !playerPosition.y) {
-          playerPosition.x = posX;
-          playerPosition.y = posY;
-          console.log({ posX, posY, playerPosition });
-        }
+      if (col == "O" && !playerPosition.x && !playerPosition.y) {
+        playerPosition.x = posX / elementSize;
+        playerPosition.y = posY / elementSize;
       }
       //Mostrando el emoji o elemento en su posicion
       game.fillText(emoji, posX, posY);
@@ -73,9 +70,14 @@ function starGame() {
   //Mostrando el jugador
   movePlayer();
 }
+
 //MOVIMIENTOS DEL JUGADOR
 function movePlayer() {
-  game.fillText(emojis["PLAYER"], playerPosition.x, playerPosition.y);
+  game.fillText(
+    emojis["PLAYER"],
+    playerPosition.x * elementSize,
+    playerPosition.y * elementSize
+  );
 }
 
 function moveBykeys(event) {
@@ -86,21 +88,30 @@ function moveBykeys(event) {
 }
 function moveUp() {
   console.log("Arriba");
-  playerPosition.y -= elementSize;
-  starGame();
+  if (playerPosition.y > 1) {
+    playerPosition.y -= 1;
+  }
+  startGame();
 }
 function moveLeft() {
   console.log("Izquierda");
-  playerPosition.x -= elementSize;
-  starGame();
+  if (playerPosition.x > 1) {
+    playerPosition.x -= 1;
+  }
+  startGame();
 }
 function moveRight() {
   console.log("Derecha");
-  playerPosition.x += elementSize;
-  starGame();
+  if (playerPosition.x < 10) {
+    playerPosition.x += 1;
+  }
+  startGame();
 }
 function moveDown() {
-  playerPosition.y += elementSize;
-  starGame();
+  console.log("Abajo");
+  if (playerPosition.y < 10) {
+    playerPosition.y += 1;
+  }
+  startGame();
 }
 //

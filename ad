@@ -1,0 +1,71 @@
+[33mcommit b5acaa78771c47af8bb9ca2855d8619c176ffdd6[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Santiago <santiagoloaizagarcia14@gmail.com>
+Date:   Sat Jul 22 12:21:29 2023 -0500
+
+    Agregando movimientos visuales, class 10
+
+[1mdiff --git a/game.js b/game.js[m
+[1mindex c837f9c..6eeb140 100644[m
+[1m--- a/game.js[m
+[1m+++ b/game.js[m
+[36m@@ -49,6 +49,8 @@[m [mfunction starGame() {[m
+   const mapRowCols = mapRows.map((row) => row.trim().split("")); // creando un array bidimensional con los caracteres individuales[m
+   console.log({ map, mapRows, mapRowCols });[m
+ [m
+[32m+[m[32m  game.clearRect(0, 0, canvasSize, canvasSize);[m
+[32m+[m
+   //Recorriendo array multidimensional, de filas y columnas === index para obtener posiciones[m
+   mapRowCols.forEach((row, rowIndex) => {[m
+     row.forEach((col, colIndex) => {[m
+[36m@@ -58,9 +60,11 @@[m [mfunction starGame() {[m
+ [m
+       //Mos[m
+       if (col == "O") {[m
+[31m-        playerPosition.x = posX;[m
+[31m-        playerPosition.y = posY;[m
+[31m-        console.log({ posX, posY, playerPosition });[m
+[32m+[m[32m        if (!playerPosition.x && !playerPosition.y) {[m
+[32m+[m[32m          playerPosition.x = posX;[m
+[32m+[m[32m          playerPosition.y = posY;[m
+[32m+[m[32m          console.log({ posX, posY, playerPosition });[m
+[32m+[m[32m        }[m
+       }[m
+       //Mostrando el emoji o elemento en su posicion[m
+       game.fillText(emoji, posX, posY);[m
+[36m@@ -69,11 +73,11 @@[m [mfunction starGame() {[m
+   //Mostrando el jugador[m
+   movePlayer();[m
+ }[m
+[31m-[m
+[32m+[m[32m//MOVIMIENTOS DEL JUGADOR[m
+ function movePlayer() {[m
+   game.fillText(emojis["PLAYER"], playerPosition.x, playerPosition.y);[m
+ }[m
+[31m-//MOVIMIENTOS DEL JUGADOR[m
+[32m+[m
+ function moveBykeys(event) {[m
+   if (event.key == "ArrowUp") moveUp();[m
+   else if (event.key == "ArrowLeft") moveLeft();[m
+[36m@@ -83,15 +87,20 @@[m [mfunction moveBykeys(event) {[m
+ function moveUp() {[m
+   console.log("Arriba");[m
+   playerPosition.y -= elementSize;[m
+[31m-  movePlayer();[m
+[32m+[m[32m  starGame();[m
+ }[m
+ function moveLeft() {[m
+   console.log("Izquierda");[m
+[32m+[m[32m  playerPosition.x -= elementSize;[m
+[32m+[m[32m  starGame();[m
+ }[m
+ function moveRight() {[m
+   console.log("Derecha");[m
+[32m+[m[32m  playerPosition.x += elementSize;[m
+[32m+[m[32m  starGame();[m
+ }[m
+ function moveDown() {[m
+[31m-  console.log("Abajo");[m
+[32m+[m[32m  playerPosition.y += elementSize;[m
+[32m+[m[32m  starGame();[m
+ }[m
+ //[m
