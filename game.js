@@ -12,6 +12,12 @@ const playerPosition = {
   y: undefined,
 };
 
+const giftPositon = {
+  x: undefined,
+  y: undefined,
+};
+let enemyPositons = [];
+
 window.addEventListener("keydown", moveBykeys);
 btnUp.addEventListener("click", moveUp);
 btnLeft.addEventListener("click", moveLeft);
@@ -49,6 +55,9 @@ function startGame() {
   const mapRowCols = mapRows.map((row) => row.trim().split("")); // creando un array bidimensional con los caracteres individuales
   console.log({ map, mapRows, mapRowCols });
 
+  //limpiando el arreglo de enemigos para que no se dupliquen por moviemiento
+  enemyPositons = [];
+  //Limpiando Canvas
   game.clearRect(0, 0, canvasSize, canvasSize);
 
   //Recorriendo array multidimensional, de filas y columnas === index para obtener posiciones
@@ -62,7 +71,17 @@ function startGame() {
       if (col == "O" && !playerPosition.x && !playerPosition.y) {
         playerPosition.x = posX / elementSize;
         playerPosition.y = posY / elementSize;
+        console.log({ playerPosition });
+      } else if (col == "I") {
+        giftPositon.x = posX / elementSize;
+        giftPositon.y = posY / elementSize;
+      } else if (col == "X") {
+        enemyPositons.push({
+          x: posX / elementSize,
+          y: posY / elementSize,
+        });
       }
+
       //Mostrando el emoji o elemento en su posicion
       game.fillText(emoji, posX, posY);
     });
@@ -73,13 +92,32 @@ function startGame() {
 
 //MOVIMIENTOS DEL JUGADOR
 function movePlayer() {
+  const giftCollisionX =
+    playerPosition.x.toFixed(3) == giftPositon.x.toFixed(3);
+  const giftCollisionY =
+    playerPosition.y.toFixed(3) == giftPositon.y.toFixed(3);
+  const gitfCollision = giftCollisionX && giftCollisionY;
+
+  if (gitfCollision) {
+    console.log("Subiste de nivel");
+  }
+
+  const enemyCollision = enemyPositons.find((enemy) => {
+    const enemyCollisonX = enemy.x.toFixed(3) == playerPosition.x.toFixed(3);
+    const enemyCollisonY = enemy.y.toFixed(3) == playerPosition.y.toFixed(3);
+    return enemyCollisonX && enemyCollisonY;
+  });
+
+  if (enemyCollision) {
+    console.log("Chocaste con un enemigo");
+  }
+
   game.fillText(
     emojis["PLAYER"],
     playerPosition.x * elementSize,
     playerPosition.y * elementSize
   );
 }
-
 function moveBykeys(event) {
   if (event.key == "ArrowUp") moveUp();
   else if (event.key == "ArrowLeft") moveLeft();
@@ -90,6 +128,8 @@ function moveUp() {
   console.log("Arriba");
   if (playerPosition.y > 1) {
     playerPosition.y -= 1;
+  } else {
+    console.log("OUT");
   }
   startGame();
 }
@@ -97,6 +137,8 @@ function moveLeft() {
   console.log("Izquierda");
   if (playerPosition.x > 1) {
     playerPosition.x -= 1;
+  } else {
+    console.log("OUT");
   }
   startGame();
 }
@@ -104,6 +146,8 @@ function moveRight() {
   console.log("Derecha");
   if (playerPosition.x < 10) {
     playerPosition.x += 1;
+  } else {
+    console.log("OUT");
   }
   startGame();
 }
@@ -111,6 +155,8 @@ function moveDown() {
   console.log("Abajo");
   if (playerPosition.y < 10) {
     playerPosition.y += 1;
+  } else {
+    console.log("OUT");
   }
   startGame();
 }
