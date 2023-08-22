@@ -4,6 +4,7 @@ const btnUp = document.querySelector("#up");
 const btnLeft = document.querySelector("#left");
 const btnRight = document.querySelector("#right");
 const btnDown = document.querySelector("#down");
+const spanLives = document.querySelector("#lives");
 
 let canvasSize; //tamano de canvas
 let elementSize;
@@ -60,6 +61,8 @@ function startGame() {
   const mapRows = map.trim().split("\n"); //Accediendo a las filas, donde eliminamos los elementos vacios y los saltos de linea
   const mapRowCols = mapRows.map((row) => row.trim().split("")); // creando un array bidimensional con los caracteres individuales
   console.log({ map, mapRows, mapRowCols });
+
+  showLives();
 
   //limpiando el arreglo de enemigos para que no se dupliquen por moviemiento
   enemyPositons = [];
@@ -133,16 +136,27 @@ function levelWin() {
 function levelOver() {
   console.log("Perdiste");
   lives--;
+
   if (lives <= 0) {
     level = 0;
     lives = 3;
   }
+
   playerPosition.x = undefined;
   playerPosition.y = undefined;
   startGame();
 }
 function gameWin() {
   console.log("Terminaste El Juego");
+}
+
+function showLives() {
+  spanLives.innerHTML = emojis["HEART"].repeat(lives);
+  // const heartArray = Array(lives).fill(emojis["HEART"]); // [1,2,3]
+  // console.log(heartArray);
+
+  // spanLives.innerHTML = "";
+  // heartArray.forEach((heart) => (spanLives.append = heart));
 }
 function moveBykeys(event) {
   if (event.key == "ArrowUp") moveUp();
