@@ -7,6 +7,8 @@ const btnDown = document.querySelector("#down");
 
 let canvasSize; //tamano de canvas
 let elementSize;
+let level = 0;
+let lives = 3;
 const playerPosition = {
   x: undefined,
   y: undefined,
@@ -42,7 +44,6 @@ function setCanvasSize() {
   elementSize = canvasSize / 10;
   startGame();
 }
-
 //function para conmenzar juego, renderizar mapa
 function startGame() {
   //Tamano de elementos
@@ -50,7 +51,12 @@ function startGame() {
   game.textAlign = "end"; // aliniando el elemento en el canvas
 
   //mapa del juego
-  const map = maps[0];
+  const map = maps[level];
+
+  if (!map) {
+    gameWin();
+    return;
+  }
   const mapRows = map.trim().split("\n"); //Accediendo a las filas, donde eliminamos los elementos vacios y los saltos de linea
   const mapRowCols = mapRows.map((row) => row.trim().split("")); // creando un array bidimensional con los caracteres individuales
   console.log({ map, mapRows, mapRowCols });
@@ -89,7 +95,6 @@ function startGame() {
   //Mostrando el jugador
   movePlayer();
 }
-
 //MOVIMIENTOS DEL JUGADOR
 function movePlayer() {
   const giftCollisionX =
@@ -99,7 +104,7 @@ function movePlayer() {
   const gitfCollision = giftCollisionX && giftCollisionY;
 
   if (gitfCollision) {
-    console.log("Subiste de nivel");
+    levelWin();
   }
 
   const enemyCollision = enemyPositons.find((enemy) => {
@@ -110,6 +115,7 @@ function movePlayer() {
 
   if (enemyCollision) {
     console.log("Chocaste con un enemigo");
+    levelOver();
   }
 
   game.fillText(
@@ -117,6 +123,26 @@ function movePlayer() {
     playerPosition.x * elementSize,
     playerPosition.y * elementSize
   );
+}
+//PASANDO DE NIVEL
+function levelWin() {
+  console.log("Subiste de nivel");
+  level++;
+  startGame();
+}
+function levelOver() {
+  console.log("Perdiste");
+  lives--;
+  if (lives <= 0) {
+    level = 0;
+    lives = 3;
+  }
+  playerPosition.x = undefined;
+  playerPosition.y = undefined;
+  startGame();
+}
+function gameWin() {
+  console.log("Terminaste El Juego");
 }
 function moveBykeys(event) {
   if (event.key == "ArrowUp") moveUp();
