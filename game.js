@@ -5,11 +5,17 @@ const btnLeft = document.querySelector("#left");
 const btnRight = document.querySelector("#right");
 const btnDown = document.querySelector("#down");
 const spanLives = document.querySelector("#lives");
+const spanTime = document.querySelector("#time");
 
 let canvasSize; //tamano de canvas
 let elementSize;
 let level = 0;
 let lives = 3;
+
+let timeStart;
+let timePlayer;
+let timeInterval;
+
 const playerPosition = {
   x: undefined,
   y: undefined,
@@ -58,6 +64,13 @@ function startGame() {
     gameWin();
     return;
   }
+
+  //Tiempo de Juego
+  if (!timeStart) {
+    timeStart = Date.now();
+    timeInterval = setInterval(showTime, 100);
+  }
+
   const mapRows = map.trim().split("\n"); //Accediendo a las filas, donde eliminamos los elementos vacios y los saltos de linea
   const mapRowCols = mapRows.map((row) => row.trim().split("")); // creando un array bidimensional con los caracteres individuales
   console.log({ map, mapRows, mapRowCols });
@@ -140,6 +153,7 @@ function levelOver() {
   if (lives <= 0) {
     level = 0;
     lives = 3;
+    timeStart = undefined;
   }
 
   playerPosition.x = undefined;
@@ -148,6 +162,7 @@ function levelOver() {
 }
 function gameWin() {
   console.log("Terminaste El Juego");
+  clearInterval(timeInterval);
 }
 
 function showLives() {
@@ -157,6 +172,9 @@ function showLives() {
 
   // spanLives.innerHTML = "";
   // heartArray.forEach((heart) => (spanLives.append = heart));
+}
+function showTime() {
+  spanTime.innerHTML = Date.now() - timeStart;
 }
 function moveBykeys(event) {
   if (event.key == "ArrowUp") moveUp();
