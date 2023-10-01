@@ -51,6 +51,12 @@ button:not(:last-child) {
     max-width: 460px;
 }
 
+.tryAgain{
+    display: flex;
+    flex-wrap: wrap;
+
+}
+
 p {
     display: block;
     margin: 0;

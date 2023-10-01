@@ -8,6 +8,7 @@ const spanLives = document.querySelector("#lives");
 const spanTime = document.querySelector("#time");
 const spanRecord = document.querySelector("#record");
 const pResult = document.querySelector("#result");
+const btnStart = document.querySelector("#start");
 
 let canvasSize; //tam de canvas
 let elementSize;
@@ -29,6 +30,7 @@ const giftPositon = {
 };
 let enemyPositons = [];
 
+btnStart.addEventListener("click", startAgain);
 window.addEventListener("keydown", moveBykeys);
 btnUp.addEventListener("click", moveUp);
 btnLeft.addEventListener("click", moveLeft);
@@ -64,6 +66,7 @@ function startGame() {
 
   if (!map) {
     gameWin();
+
     return;
   }
 
@@ -183,6 +186,9 @@ function gameWin() {
   }
 
   console.log({ recordTime, playerTime });
+}
+function startAgain() {
+  location.reload();
 }
 
 function showLives() {
