@@ -6,8 +6,10 @@ const btnRight = document.querySelector("#right");
 const btnDown = document.querySelector("#down");
 const spanLives = document.querySelector("#lives");
 const spanTime = document.querySelector("#time");
+const spanRecord = document.querySelector("#record");
+const pResult = document.querySelector("#result");
 
-let canvasSize; //tamano de canvas
+let canvasSize; //tam de canvas
 let elementSize;
 let level = 0;
 let lives = 3;
@@ -69,6 +71,7 @@ function startGame() {
   if (!timeStart) {
     timeStart = Date.now();
     timeInterval = setInterval(showTime, 100);
+    showRecord();
   }
 
   const mapRows = map.trim().split("\n"); //Accediendo a las filas, donde eliminamos los elementos vacios y los saltos de linea
@@ -163,6 +166,23 @@ function levelOver() {
 function gameWin() {
   console.log("Terminaste El Juego");
   clearInterval(timeInterval);
+
+  const recordTime = localStorage.getItem("record_time");
+  const playerTime = Date.now() - timeStart;
+
+  if (recordTime) {
+    if (recordTime >= playerTime) {
+      localStorage.setItem("record_time", playerTime);
+      pResult.innerHTML = "SUPERASTE EL RECORD";
+    } else {
+      pResult.innerHTML = "Lo sieto no superaste el record :(";
+    }
+  } else {
+    localStorage.setItem("record_time", playerTime);
+    pResult.innerHTML = "Primera vez?, Pero ahora trata de superar tu tiempo:)";
+  }
+
+  console.log({ recordTime, playerTime });
 }
 
 function showLives() {
@@ -175,6 +195,9 @@ function showLives() {
 }
 function showTime() {
   spanTime.innerHTML = Date.now() - timeStart;
+}
+function showRecord() {
+  spanRecord.innerHTML = localStorage.getItem("record_time");
 }
 function moveBykeys(event) {
   if (event.key == "ArrowUp") moveUp();
